@@ -1,0 +1,204 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 1000;
+            height: 500;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 1000;
+            height: 500;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "Kiss Land", "label": "Kiss Land", "shape": "dot", "size": 10}, {"id": "House Of Balloons (Original)", "label": "House Of Balloons (Original)", "shape": "dot", "size": 10}, {"id": "Beauty Behind The Madness", "label": "Beauty Behind The Madness", "shape": "dot", "size": 10}, {"id": "An Evening With Silk Sonic", "label": "An Evening With Silk Sonic", "shape": "dot", "size": 10}, {"id": "The Lost Boy", "label": "The Lost Boy", "shape": "dot", "size": 10}, {"id": "dont smile at me", "label": "dont smile at me", "shape": "dot", "size": 10}, {"id": "Happier Than Ever", "label": "Happier Than Ever", "shape": "dot", "size": 10}, {"id": "A.M. Paradox", "label": "A.M. Paradox", "shape": "dot", "size": 10}, {"id": "Lost", "label": "Lost", "shape": "dot", "size": 10}, {"id": "Playboi Carti", "label": "Playboi Carti", "shape": "dot", "size": 10}, {"id": "Eternal Atake", "label": "Eternal Atake", "shape": "dot", "size": 10}, {"id": "Trip At Knight (Complete Edition)", "label": "Trip At Knight (Complete Edition)", "shape": "dot", "size": 10}, {"id": "Certified Lover Boy", "label": "Certified Lover Boy", "shape": "dot", "size": 10}, {"id": "BALLADS 1", "label": "BALLADS 1", "shape": "dot", "size": 10}, {"id": "Solar Power", "label": "Solar Power", "shape": "dot", "size": 10}, {"id": "Melodrama", "label": "Melodrama", "shape": "dot", "size": 10}, {"id": "Meet The Woo 2", "label": "Meet The Woo 2", "shape": "dot", "size": 10}, {"id": "Meet The Woo", "label": "Meet The Woo", "shape": "dot", "size": 10}, {"id": "JACKBOYS", "label": "JACKBOYS", "shape": "dot", "size": 10}, {"id": "Life of a DON", "label": "Life of a DON", "shape": "dot", "size": 10}, {"id": "Heaven Or Hell", "label": "Heaven Or Hell", "shape": "dot", "size": 10}, {"id": "DIE FOR MY BITCH", "label": "DIE FOR MY BITCH", "shape": "dot", "size": 10}, {"id": "Pure Heroine", "label": "Pure Heroine", "shape": "dot", "size": 10}, {"id": "Free Spirit", "label": "Free Spirit", "shape": "dot", "size": 10}, {"id": "Ctrl", "label": "Ctrl", "shape": "dot", "size": 10}, {"id": "When It\u0027s All Said And Done... Take Time", "label": "When It\u0027s All Said And Done... Take Time", "shape": "dot", "size": 10}, {"id": "Drip Harder", "label": "Drip Harder", "shape": "dot", "size": 10}, {"id": "Last Day Of Summer", "label": "Last Day Of Summer", "shape": "dot", "size": 10}, {"id": "Donda", "label": "Donda", "shape": "dot", "size": 10}, {"id": "JESUS IS KING", "label": "JESUS IS KING", "shape": "dot", "size": 10}, {"id": "DAYTONA", "label": "DAYTONA", "shape": "dot", "size": 10}, {"id": "I like it when you sleep, for you are so beautiful yet so unaware of it", "label": "I like it when you sleep, for you are so beautiful yet so unaware of it", "shape": "dot", "size": 10}, {"id": "The 1975", "label": "The 1975", "shape": "dot", "size": 10}, {"id": "A Brief Inquiry Into Online Relationships", "label": "A Brief Inquiry Into Online Relationships", "shape": "dot", "size": 10}, {"id": "LABRINTH, SIA \u0026 DIPLO PRESENT... LSD", "label": "LABRINTH, SIA \u0026 DIPLO PRESENT... LSD", "shape": "dot", "size": 10}, {"id": "Nectar", "label": "Nectar", "shape": "dot", "size": 10}, {"id": "Limbo", "label": "Limbo", "shape": "dot", "size": 10}, {"id": "The Highlights", "label": "The Highlights", "shape": "dot", "size": 10}, {"id": "After Hours", "label": "After Hours", "shape": "dot", "size": 10}, {"id": "thank u, next", "label": "thank u, next", "shape": "dot", "size": 10}, {"id": "The College Dropout", "label": "The College Dropout", "shape": "dot", "size": 10}, {"id": "Graduation", "label": "Graduation", "shape": "dot", "size": 10}, {"id": "KIDS SEE GHOSTS", "label": "KIDS SEE GHOSTS", "shape": "dot", "size": 10}, {"id": "ye", "label": "ye", "shape": "dot", "size": 10}, {"id": "ALPHA", "label": "ALPHA", "shape": "dot", "size": 10}, {"id": "CASE STUDY 01", "label": "CASE STUDY 01", "shape": "dot", "size": 10}, {"id": "Somewhere In-Between", "label": "Somewhere In-Between", "shape": "dot", "size": 10}, {"id": "This Thing Called Living", "label": "This Thing Called Living", "shape": "dot", "size": 10}, {"id": "Vince Staples", "label": "Vince Staples", "shape": "dot", "size": 10}, {"id": "The Juicebox", "label": "The Juicebox", "shape": "dot", "size": 10}, {"id": "Apollo XXI", "label": "Apollo XXI", "shape": "dot", "size": 10}, {"id": "Flower Boy", "label": "Flower Boy", "shape": "dot", "size": 10}, {"id": "The Life Of Pi\u0027erre 5", "label": "The Life Of Pi\u0027erre 5", "shape": "dot", "size": 10}, {"id": "The Juice: Vol. II", "label": "The Juice: Vol. II", "shape": "dot", "size": 10}, {"id": "CINEMA", "label": "CINEMA", "shape": "dot", "size": 10}, {"id": "Superclean, Vol. I", "label": "Superclean, Vol. I", "shape": "dot", "size": 10}, {"id": "CALL ME IF YOU GET LOST", "label": "CALL ME IF YOU GET LOST", "shape": "dot", "size": 10}, {"id": "IGOR", "label": "IGOR", "shape": "dot", "size": 10}, {"id": "Fuck The World", "label": "Fuck The World", "shape": "dot", "size": 10}, {"id": "The Juice: Vol. I", "label": "The Juice: Vol. I", "shape": "dot", "size": 10}, {"id": "The Life Of Pablo", "label": "The Life Of Pablo", "shape": "dot", "size": 10}, {"id": "Yeezus", "label": "Yeezus", "shape": "dot", "size": 10}, {"id": "Urban Flora", "label": "Urban Flora", "shape": "dot", "size": 10}, {"id": "It Was Divine", "label": "It Was Divine", "shape": "dot", "size": 10}, {"id": "American Teen", "label": "American Teen", "shape": "dot", "size": 10}, {"id": "Funk Wav Bounces Vol.1", "label": "Funk Wav Bounces Vol.1", "shape": "dot", "size": 10}, {"id": "The Off-Season", "label": "The Off-Season", "shape": "dot", "size": 10}, {"id": "When It\u0027s All Said And Done", "label": "When It\u0027s All Said And Done", "shape": "dot", "size": 10}, {"id": "Blonde", "label": "Blonde", "shape": "dot", "size": 10}, {"id": "4 Your Eyez Only", "label": "4 Your Eyez Only", "shape": "dot", "size": 10}, {"id": "2014 Forest Hills Drive", "label": "2014 Forest Hills Drive", "shape": "dot", "size": 10}, {"id": "Starboy", "label": "Starboy", "shape": "dot", "size": 10}, {"id": "Friends", "label": "Friends", "shape": "dot", "size": 10}, {"id": "Apolonio", "label": "Apolonio", "shape": "dot", "size": 10}, {"id": "TAKE TIME", "label": "TAKE TIME", "shape": "dot", "size": 10}, {"id": "808s \u0026 Heartbreak", "label": "808s \u0026 Heartbreak", "shape": "dot", "size": 10}, {"id": "Birds In The Trap Sing McKnight", "label": "Birds In The Trap Sing McKnight", "shape": "dot", "size": 10}, {"id": "Rodeo (Expanded Edition)", "label": "Rodeo (Expanded Edition)", "shape": "dot", "size": 10}, {"id": "ASTROWORLD", "label": "ASTROWORLD", "shape": "dot", "size": 10}, {"id": "Watch The Throne (Deluxe)", "label": "Watch The Throne (Deluxe)", "shape": "dot", "size": 10}, {"id": "My Dear Melancholy,", "label": "My Dear Melancholy,", "shape": "dot", "size": 10}, {"id": "Here For Now", "label": "Here For Now", "shape": "dot", "size": 10}, {"id": "Kids At Play- EP", "label": "Kids At Play- EP", "shape": "dot", "size": 10}, {"id": "The Slow Rush", "label": "The Slow Rush", "shape": "dot", "size": 10}, {"id": "Currents", "label": "Currents", "shape": "dot", "size": 10}, {"id": "Pilgrim\u0027s Paradise", "label": "Pilgrim\u0027s Paradise", "shape": "dot", "size": 10}, {"id": "Freudian", "label": "Freudian", "shape": "dot", "size": 10}, {"id": "My Beautiful Dark Twisted Fantasy", "label": "My Beautiful Dark Twisted Fantasy", "shape": "dot", "size": 10}, {"id": "channel ORANGE", "label": "channel ORANGE", "shape": "dot", "size": 10}, {"id": "Discovery", "label": "Discovery", "shape": "dot", "size": 10}, {"id": "Random Access Memories", "label": "Random Access Memories", "shape": "dot", "size": 10}, {"id": "Process", "label": "Process", "shape": "dot", "size": 10}, {"id": "The Dark Side of the Moon", "label": "The Dark Side of the Moon", "shape": "dot", "size": 10}, {"id": "gg bb xx", "label": "gg bb xx", "shape": "dot", "size": 10}, {"id": "Back To Black", "label": "Back To Black", "shape": "dot", "size": 10}, {"id": "Dreamland", "label": "Dreamland", "shape": "dot", "size": 10}, {"id": "25", "label": "25", "shape": "dot", "size": 10}, {"id": "All I Want Is You", "label": "All I Want Is You", "shape": "dot", "size": 10}, {"id": "If This Isn\u2019t Nice, I Don\u2019t Know What Is", "label": "If This Isn\u2019t Nice, I Don\u2019t Know What Is", "shape": "dot", "size": 10}, {"id": "Wiped Out!", "label": "Wiped Out!", "shape": "dot", "size": 10}, {"id": "PSYCHODRAMA", "label": "PSYCHODRAMA", "shape": "dot", "size": 10}, {"id": "?", "label": "?", "shape": "dot", "size": 10}, {"id": "EVERYTHING IS LOVE", "label": "EVERYTHING IS LOVE", "shape": "dot", "size": 10}, {"id": "SOUR", "label": "SOUR", "shape": "dot", "size": 10}, {"id": "No Love Lost (Deluxe)", "label": "No Love Lost (Deluxe)", "shape": "dot", "size": 10}, {"id": "ROADRUNNER: NEW LIGHT, NEW MACHINE", "label": "ROADRUNNER: NEW LIGHT, NEW MACHINE", "shape": "dot", "size": 10}, {"id": "Whack World", "label": "Whack World", "shape": "dot", "size": 10}, {"id": "Divinely Uninspired To A Hellish Extent", "label": "Divinely Uninspired To A Hellish Extent", "shape": "dot", "size": 10}, {"id": "we just need some time together", "label": "we just need some time together", "shape": "dot", "size": 10}, {"id": "Dopamine", "label": "Dopamine", "shape": "dot", "size": 10}, {"id": "Wonder", "label": "Wonder", "shape": "dot", "size": 10}, {"id": "Get Rich Or Die Tryin\u0027", "label": "Get Rich Or Die Tryin\u0027", "shape": "dot", "size": 10}, {"id": "i think you think too much of me", "label": "i think you think too much of me", "shape": "dot", "size": 10}, {"id": "High Highs to Low Lows", "label": "High Highs to Low Lows", "shape": "dot", "size": 10}, {"id": "Future Nostalgia", "label": "Future Nostalgia", "shape": "dot", "size": 10}, {"id": "punk2", "label": "punk2", "shape": "dot", "size": 10}, {"id": "A Song For Every Moon", "label": "A Song For Every Moon", "shape": "dot", "size": 10}, {"id": "Analogue", "label": "Analogue", "shape": "dot", "size": 10}, {"id": "Fine Line", "label": "Fine Line", "shape": "dot", "size": 10}, {"id": "folklore", "label": "folklore", "shape": "dot", "size": 10}, {"id": "Swimming", "label": "Swimming", "shape": "dot", "size": 10}, {"id": "Gold Skies", "label": "Gold Skies", "shape": "dot", "size": 10}, {"id": "F*CK LOVE", "label": "F*CK LOVE", "shape": "dot", "size": 10}, {"id": "Hozier", "label": "Hozier", "shape": "dot", "size": 10}, {"id": "French Exit", "label": "French Exit", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "Kiss Land", "to": "House Of Balloons (Original)", "weight": 1}, {"from": "Kiss Land", "to": "Beauty Behind The Madness", "weight": 1}, {"color": "red", "from": "An Evening With Silk Sonic", "to": "The Lost Boy", "weight": 1}, {"from": "dont smile at me", "to": "Happier Than Ever", "weight": 1}, {"from": "A.M. Paradox", "to": "Lost", "weight": 1}, {"color": "red", "from": "Playboi Carti", "to": "Eternal Atake", "weight": 1}, {"color": "red", "from": "Trip At Knight (Complete Edition)", "to": "Certified Lover Boy", "weight": 1}, {"color": "red", "from": "Trip At Knight (Complete Edition)", "to": "Eternal Atake", "weight": 1}, {"color": "red", "from": "Trip At Knight (Complete Edition)", "to": "BALLADS 1", "weight": 1}, {"from": "Solar Power", "to": "Melodrama", "weight": 1}, {"from": "Meet The Woo 2", "to": "Meet The Woo", "weight": 1}, {"color": "red", "from": "Meet The Woo 2", "to": "JACKBOYS", "weight": 1}, {"from": "Life of a DON", "to": "Heaven Or Hell", "weight": 1}, {"color": "red", "from": "Life of a DON", "to": "JACKBOYS", "weight": 1}, {"color": "red", "from": "Life of a DON", "to": "DIE FOR MY BITCH", "weight": 1}, {"from": "Melodrama", "to": "Pure Heroine", "weight": 1}, {"from": "Melodrama", "to": "Melodrama", "weight": 1}, {"color": "red", "from": "Melodrama", "to": "Free Spirit", "weight": 1}, {"color": "red", "from": "Melodrama", "to": "Ctrl", "weight": 1}, {"color": "red", "from": "Certified Lover Boy", "to": "JACKBOYS", "weight": 1}, {"color": "red", "from": "Certified Lover Boy", "to": "When It\u0027s All Said And Done... Take Time", "weight": 1}, {"color": "red", "from": "Certified Lover Boy", "to": "Drip Harder", "weight": 1}, {"color": "red", "from": "Certified Lover Boy", "to": "Last Day Of Summer", "weight": 1}, {"from": "Donda", "to": "JESUS IS KING", "weight": 1}, {"color": "red", "from": "Donda", "to": "DAYTONA", "weight": 1}, {"from": "I like it when you sleep, for you are so beautiful yet so unaware of it", "to": "The 1975", "weight": 1}, {"from": "I like it when you sleep, for you are so beautiful yet so unaware of it", "to": "A Brief Inquiry Into Online Relationships", "weight": 1}, {"color": "red", "from": "LABRINTH, SIA \u0026 DIPLO PRESENT... LSD", "to": "Nectar", "weight": 1}, {"color": "red", "from": "Last Day Of Summer", "to": "Limbo", "weight": 1}, {"from": "The Highlights", "to": "After Hours", "weight": 1}, {"color": "red", "from": "The Highlights", "to": "thank u, next", "weight": 1}, {"from": "The College Dropout", "to": "Graduation", "weight": 1}, {"from": "JESUS IS KING", "to": "KIDS SEE GHOSTS", "weight": 1}, {"from": "KIDS SEE GHOSTS", "to": "ye", "weight": 1}, {"color": "red", "from": "KIDS SEE GHOSTS", "to": "DAYTONA", "weight": 1}, {"color": "red", "from": "DAYTONA", "to": "The Lost Boy", "weight": 1}, {"color": "red", "from": "ALPHA", "to": "CASE STUDY 01", "weight": 1}, {"from": "Somewhere In-Between", "to": "This Thing Called Living", "weight": 1}, {"color": "red", "from": "Vince Staples", "to": "Limbo", "weight": 1}, {"color": "red", "from": "Vince Staples", "to": "The Juicebox", "weight": 1}, {"color": "red", "from": "Apollo XXI", "to": "Flower Boy", "weight": 1}, {"color": "red", "from": "The Life Of Pi\u0027erre 5", "to": "Eternal Atake", "weight": 1}, {"from": "The Juicebox", "to": "The Juice: Vol. II", "weight": 1}, {"from": "CINEMA", "to": "Superclean, Vol. I", "weight": 1}, {"from": "CALL ME IF YOU GET LOST", "to": "IGOR", "weight": 1}, {"color": "red", "from": "CALL ME IF YOU GET LOST", "to": "Eternal Atake", "weight": 1}, {"color": "red", "from": "CALL ME IF YOU GET LOST", "to": "Fuck The World", "weight": 1}, {"from": "The Juice: Vol. II", "to": "The Juice: Vol. I", "weight": 1}, {"from": "The Life Of Pablo", "to": "Yeezus", "weight": 1}, {"from": "The Life Of Pablo", "to": "ye", "weight": 1}, {"from": "Urban Flora", "to": "It Was Divine", "weight": 1}, {"from": "Free Spirit", "to": "American Teen", "weight": 1}, {"color": "red", "from": "Free Spirit", "to": "Funk Wav Bounces Vol.1", "weight": 1}, {"color": "red", "from": "Free Spirit", "to": "It Was Divine", "weight": 1}, {"color": "red", "from": "Drip Harder", "to": "The Off-Season", "weight": 1}, {"color": "red", "from": "Drip Harder", "to": "JACKBOYS", "weight": 1}, {"from": "When It\u0027s All Said And Done... Take Time", "to": "When It\u0027s All Said And Done", "weight": 1}, {"color": "red", "from": "Funk Wav Bounces Vol.1", "to": "Blonde", "weight": 1}, {"color": "red", "from": "Funk Wav Bounces Vol.1", "to": "thank u, next", "weight": 1}, {"color": "red", "from": "Funk Wav Bounces Vol.1", "to": "JACKBOYS", "weight": 1}, {"from": "Fuck The World", "to": "Lost", "weight": 1}, {"from": "4 Your Eyez Only", "to": "2014 Forest Hills Drive", "weight": 1}, {"from": "4 Your Eyez Only", "to": "The Off-Season", "weight": 1}, {"from": "Beauty Behind The Madness", "to": "Starboy", "weight": 1}, {"from": "Friends", "to": "Apolonio", "weight": 1}, {"from": "When It\u0027s All Said And Done", "to": "TAKE TIME", "weight": 1}, {"from": "Graduation", "to": "808s \u0026 Heartbreak", "weight": 1}, {"from": "Birds In The Trap Sing McKnight", "to": "Rodeo (Expanded Edition)", "weight": 1}, {"from": "Birds In The Trap Sing McKnight", "to": "ASTROWORLD", "weight": 1}, {"from": "ASTROWORLD", "to": "JACKBOYS", "weight": 1}, {"from": "Yeezus", "to": "Watch The Throne (Deluxe)", "weight": 1}, {"from": "Starboy", "to": "My Dear Melancholy,", "weight": 1}, {"from": "My Dear Melancholy,", "to": "After Hours", "weight": 1}, {"from": "Here For Now", "to": "Kids At Play- EP", "weight": 1}, {"from": "The Slow Rush", "to": "Currents", "weight": 1}, {"from": "Pilgrim\u0027s Paradise", "to": "Freudian", "weight": 1}, {"color": "red", "from": "Watch The Throne (Deluxe)", "to": "My Beautiful Dark Twisted Fantasy", "weight": 1}, {"color": "red", "from": "Watch The Throne (Deluxe)", "to": "Blonde", "weight": 1}, {"from": "My Beautiful Dark Twisted Fantasy", "to": "808s \u0026 Heartbreak", "weight": 1}, {"from": "IGOR", "to": "Flower Boy", "weight": 1}, {"from": "BALLADS 1", "to": "Nectar", "weight": 1}, {"from": "channel ORANGE", "to": "Blonde", "weight": 1}, {"color": "red", "from": "Flower Boy", "to": "Blonde", "weight": 1}, {"from": "CASE STUDY 01", "to": "Freudian", "weight": 1}, {"color": "red", "from": "Heaven Or Hell", "to": "JACKBOYS", "weight": 1}, {"color": "red", "from": "JACKBOYS", "to": "Ctrl", "weight": 1}, {"from": "Discovery", "to": "Random Access Memories", "weight": 1}, {"color": "red", "from": "Apolonio", "to": "Nectar", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

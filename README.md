@@ -1,22 +1,17 @@
-# Album Wall Art
+# Musical Family Tree
 
-My first stab at computational art -- a piece for my wall. I just want to throw a bunch of random computational tools at a single problem: make a cool piece of art that involves all the albums I've listened to this year & can grow as I listen to more. I'm thinking CNNs, graph algorithms, GANs for style transfer, everything.
+My first stab at computational art, attempting to study and appreciate the interconnectedness of the modern music industry. Within a specific genre, the same set of artists, producers, and songwriters are behind many of the biggest hits. And sometimes these people even cross over genres in surprising ways! 
 
 ## Steps
 
-1. Import images of album covers from a list of (album names, artist) pairs.
-  - Use Google Image API and Python
+1. Get all saved albums from Spotify
 
-2. Figure out what pieces of art I like
-  - Tom Scott's video => compare pairs of art to figure out a ranking of art
-  - Train CNN to learn this art => ranking function
-    - Need to standardize sizes of art
-  - Potentially train GAN to generate art that I like?
+2. Get all album artwork generated, and printed
 
-3. Generate layouts of images
-  - Increase size of albums based on their importance, using similar ranking mechanism as before
-  - Connect albums with a cool link
-  - Experiment with grid, overlapping, & blended layout of images
+3. Get all artists/songwriter/producer data on albums
 
-4. Print!
-  - Either print out poster or individual images
+4. Generate graph of data
+
+5. Convert to a displayable format
+
+6. Put up on wall
